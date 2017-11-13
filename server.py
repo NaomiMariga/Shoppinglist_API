@@ -34,16 +34,12 @@ def welcome():
 @app.route('/auth/register', methods=['POST', 'GET'])
 def register():
     try:
-        if request.method == ['POST']:
+        if request.method == 'POST':
             email = request.form.get('email')
             username = request.form.get('username')
-            password = request.form.get('password')
+            password = request.form.get('pword')
 
-            out = user.user_registration(
-                email=email,
-                username=username,
-                password=password
-            )
+            out = user.user_registration(email, username, password)
         else:
             out = {
                 "message": "Use post to provide the below parameters",
@@ -60,9 +56,9 @@ def register():
 def login():
 
     try:
-        if request.method == ['POST']:
+        if request.method == 'POST':
             email = request.form.get('email')
-            password = request.form.get('password')
+            password = request.form.get('pword')
             out = user.user_login(
                 email=email,
                 password=password
@@ -81,7 +77,7 @@ def login():
 @app.route('/auth/reset-password', methods=['POST', 'GET'])
 def reset_password():
     try:
-        if request.method == ['POST']:
+        if request.method == 'POST':
             email = request.form.get('email')
             out = user.reset_password(email=email)
         else:
@@ -98,7 +94,7 @@ def reset_password():
 @app.route('/auth/logout', methods=['POST', 'GET'])
 def logout():
     try:
-        if request.method == ['POST']:
+        if request.method == 'POST':
             user_id = request.form.get('user_id')
             token = request.form.get('token')
             out = user.log_out(user_id=user_id, token=token)
@@ -116,7 +112,7 @@ def logout():
 @app.route('/auth/change-password', methods=['POST', 'GET'])
 def change_password():
     try:
-        if request.method == ['POST']:
+        if request.method == 'POST':
             user_id = request.form.get('user_id')
             token = request.form.get('token')
             old_password = request.form.get('old_password')
@@ -139,5 +135,5 @@ def change_password():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 8000))
     app.run(host="0.0.0.0", port=port)
