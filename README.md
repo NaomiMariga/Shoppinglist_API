@@ -1,0 +1,1 @@
+### FLASK_API is a Persistent API version of the Shoppinglist application that allows users to keep track of the items they wish to purchase while maintaining the budget.
