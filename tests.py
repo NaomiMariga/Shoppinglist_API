@@ -5,7 +5,7 @@ from shoppinglist import Shoppinglist
 from user import User
 
 user = User()
-shopping = Shoppinglist(user)
+shopping = Shoppinglist()
 
 
 class Tests(unittest.TestCase):
@@ -13,6 +13,7 @@ class Tests(unittest.TestCase):
     user_id = None
     list = None
     items = None
+    registered_email = "kaburamariga@gmail.com"
 
     def test_all_functions_return_a_dictionary(self):
         self.assertIsInstance(user.user_registration(None, None, None), dict, "registration returns a dictionary")
@@ -38,7 +39,7 @@ class Tests(unittest.TestCase):
         result5 = user.user_registration("example@email.com", "username", "")
         result6 = user.user_registration("example@email.com", "us", "Password1234")
         result7 = user.user_registration("example@email.com", "username", "Password")
-        result8 = user.user_registration("registered@email.com", "username", "Password1234")
+        result8 = user.user_registration(self.registered_email, "username", "Password1234")
         self.assertFalse(result1["success"], "Registration only accepts a valid email format")
         self.assertFalse(result2["success"], "Registration accepts a password length of at least 6 characters")
         self.assertFalse(result3["success"], "Registration Accepts password mixed with uppercase and lowercase")
@@ -51,8 +52,8 @@ class Tests(unittest.TestCase):
     def test_login_accepts_only_registered_parties(self):
         result1 = user.user_login("email", "Password1234")
         result2 = user.user_login("registered@email.com", "password")
-        result3 = user.user_login("unregistered@email.com", "Password1234")
-        result4 = user.user_login("registered@email.com", "Password1234")
+        result3 = user.user_login("unregistered1@email.com", "Password1234")
+        result4 = user.user_login(self.registered_email, "knzqflxmho")
         self.assertFalse(result1["success"], "Incorrect email format is not allowed")
         self.assertFalse(result2["success"], "Incorrect password is not allowed")
         self.assertFalse(result3["success"], "Unregistered email is not authorised")
@@ -62,6 +63,7 @@ class Tests(unittest.TestCase):
         self.assertIsInstance(result4["message"], dict, "returns a dictionary")
 
     def test_logged_in_functions_properly(self):
+        print(self.user_id, self.auth_token)
         result1 = user.user_is_logged_in(self.user_id, "token")
         result2 = user.user_is_logged_in("user_id", self.auth_token)
         result3 = user.user_is_logged_in(self.user_id, self.auth_token)
@@ -72,7 +74,7 @@ class Tests(unittest.TestCase):
     def test_reset_password(self):
         result1 = user.reset_password("email")
         result2 = user.reset_password("example@email.com")
-        result3 = user.reset_password("registered@email.com")
+        result3 = user.reset_password(self.registered_email)
         self.assertFalse(result1["success"], "invalid email format is not allowed")
         self.assertFalse(result2["success"], "does not accept unregistered email")
         self.assertTrue(result3["success"], "Email should be sent")
