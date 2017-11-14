@@ -49,7 +49,7 @@ class Tests(unittest.TestCase):
         self.assertFalse(result7["success"], "Registration Accepts passwords that are mixed with letters and numbers")
         self.assertTrue(result8["success"], "Registration should be successful")
 
-    def test_login_accepts_only_registered_parties(self):
+    def test_01_login_accepts_only_registered_parties(self):
         result1 = user.user_login("email", "Password1234")
         result2 = user.user_login("registered@email.com", "password")
         result3 = user.user_login("unregistered1@email.com", "Password1234")
@@ -63,7 +63,7 @@ class Tests(unittest.TestCase):
         self.assertIsInstance(result4["message"], dict, "returns a dictionary")
         print(self.auth_token, self.user_id)
 
-    def test_logged_in_functions_properly(self):
+    def test_02_logged_in_functions_properly(self):
         print(self.user_id, self.auth_token)
         result1 = user.user_is_logged_in(self.user_id, "token")
         result2 = user.user_is_logged_in("user_id", self.auth_token)
@@ -81,7 +81,7 @@ class Tests(unittest.TestCase):
         self.assertFalse(result2["success"], "does not accept unregistered email")
         self.assertTrue(result3["success"], "Email should be sent")
     '''
-
+    '''
     def test_change_password(self):
         result1 = user.change_password(None, None, "Password1234", "NewPassword1234")
         result2 = user.change_password("", "", "Password1234", "Newpassword123")
@@ -100,6 +100,8 @@ class Tests(unittest.TestCase):
         self.assertFalse(result7["success"], "change password does not accept new password without mixed uppercase and lowercase")
         self.assertTrue(result8["success"], "change password should be successful")
 
+    '''
+    '''
     def test_logout(self):
         result1 = user.log_out(None, None)
         result2 = user.log_out("", "")
@@ -109,6 +111,7 @@ class Tests(unittest.TestCase):
         self.assertFalse(result2["success"], "user_id and token cannot be empty strings")
         self.assertFalse(result3["success"], "user_id and token cannot be incorrect")
         self.assertTrue(result4["success"], "logout should be True")
+    '''
 
     def test_create_shoppinglist(self):
         result1 = shopping.create_shoppinglist(None, None, "listName")
