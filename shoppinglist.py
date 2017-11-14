@@ -45,22 +45,24 @@ class Shoppinglist(User):
                 stmt = text(sql)
                 stmt = stmt.bindparams(user_id=user_id)
                 result = connection.execute(stmt)
-                row = result.fetchAll()
+                rows = result.fetchall()
 
-                if row is not None:
+                if rows is not None:
                     success = True
-                    user_id = row["user_id"]
-                    list_id = row["list_id"]
-                    list_name = row["list_name"]
-                    update_time = row["time_updated"]
                     message = []
-                    lists = {
-                        "user_id": user_id,
-                        "list_id": list_id,
-                        "list_name": list_name,
-                        "update_time": update_time
-                    }
-                    message = message.append(lists)
+                    for row in rows:
+                        success = True
+                        user_id = row["user_id"]
+                        list_id = row["list_id"]
+                        list_name = row["list_name"]
+                        update_time = row["time_updated"]
+                        lists = {
+                            "user_id": user_id,
+                            "list_id": list_id,
+                            "list_name": list_name,
+                            "update_time": update_time
+                        }
+                        message.append(lists)
                 else:
                     message = "No lists found"
             else:
