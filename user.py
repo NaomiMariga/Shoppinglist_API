@@ -82,10 +82,11 @@ class User(Utilities):
                         if row is not None:
                             success = True
                             user_id = row["user_id"]
+                            username = row["username"]
                             auth_token = self.auth_token("abcdefghijklmnopqrstuvwzyz1234567890", 20)
                             message = {
-                                "message": "Login was successful, Welcome" + row["username"],
-                                "user_id": row["user_id"],
+                                "message": "Login was successful, Welcome" + username,
+                                "user_id": user_id,
                                 "auth_token": auth_token
                             }
                             sql = "INSERT INTO authentication (user_id, auth_token) VALUES (:user_id, :auth_token)"
@@ -206,7 +207,7 @@ class User(Utilities):
 
                 if row is not None:
                     if row["pword"] == old_password:
-                        if new_password is not None and new_password.isalnum and new_password.strip is not "":
+                        if new_password is not None and new_password.isalnum() and new_password.strip() is not "":
                             if any(letter.isdigit() for letter in new_password) and any(letter.islower() for letter in new_password) \
                                and any(letter.isupper() for letter in new_password):
                                 if len(new_password) >= 6:
