@@ -4,8 +4,10 @@ import os
 from flask import Flask, request, Response
 
 from user import User
+from shoppinglist import Shoppinglist
 
 user = User()
+shoppinglist = Shoppinglist()
 
 app = Flask(__name__)
 
@@ -130,7 +132,66 @@ def change_password():
                 "parameters": "user_id, token, old_password, new_password"
             }
     except Exception as error:
-        out = "An exception error occurred" + str(error)
+        out = {
+            "message": "An exception error occurred" + str(error),
+            "success": False
+            }
+    return Response(dict_to_json(out), mimetype="text/json")
+
+
+@app.route('/shoppinglists', methods=['POST','GET'])
+def shopping_lists():
+    try:
+        if request.method == 'POST':
+            user_id = request.form.get('user_id')
+            token = request.form.get('token')
+            list_name = request.form.get('list_name')
+            out = shoppinglist.create_shoppinglist(
+                user_id=user_id,
+                token=token,
+                list_name=list_name
+            )
+        elif request.method == 'GET':
+            user_id = request.args.get('user_id')
+            token = request.args.get('token')
+            out = shoppinglist.read_shoppinglist(user_id=user_id, token=token)
+        else:
+            out = {
+                "success": False,
+                "message": "use POST or GET to provide below parameters",
+                "parameters": "user_id, token"
+            }
+    except Exception as error:
+        out = {
+            "message": "An exception error occurred" + str(error),
+            "success": False
+        }
+    return Response(dict_to_json(out), mimetype="text/json")
+
+
+@app.route('/shoppinglists/<int:list_id>', methods=['PUT', 'GET', 'DELETE'])
+def read_shoppinglist(list_id):
+    try:
+        if request.method == 'PUT':
+            user_id = request.form.get('user_id')
+            token = request.form.get('token')
+            list_name = request.form.get('list_name')
+            out = shoppinglist.edit_shoppinglist(list_id=list_id, user_id=user_id, token=token, list_name=list_name)
+        elif request.method == 'DELETE':
+            user_id = request.form.get('user_id')
+            token = request.form.get('token')
+            out = shoppinglist.delete_shoppinglist(user_id,token,list_id)
+        else:
+            out = {
+                "success": False,
+                "message": "use PUT, DELETE or POST to provide below parameters",
+                "parameters": "user_id, token"
+            }
+    except Exception as error:
+        out = {
+            "success": False,
+            "message": "An exception error occurred " + str(error)
+        }
     return Response(dict_to_json(out), mimetype="text/json")
 
 
