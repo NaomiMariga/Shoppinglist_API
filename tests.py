@@ -113,7 +113,7 @@ class Tests(unittest.TestCase):
         self.assertTrue(result4["success"], "logout should be True")
     '''
 
-    def test_create_shoppinglist(self):
+    def test_03_create_shoppinglist(self):
         result1 = shopping.create_shoppinglist(None, None, "listName")
         result2 = shopping.create_shoppinglist("", "", "listName")
         result3 = shopping.create_shoppinglist("user_id", "token", "listName")
@@ -129,7 +129,7 @@ class Tests(unittest.TestCase):
         self.assertFalse(result6["success"], "listName accepts only alphanumeric")
         self.assertTrue(result7["success"], "List should be successfully created")
 
-    def test_read_shoppinglist(self):
+    def test_04_read_shoppinglist(self):
         result1 = shopping.read_shoppinglist(None, None)
         result2 = shopping.read_shoppinglist("", "")
         result3 = shopping.read_shoppinglist("user_id", "token")
@@ -163,7 +163,7 @@ class Tests(unittest.TestCase):
         self.assertIsInstance(result4["message"], list, "Expected to be a list")
         self.assertIsInstance(self.items, dict, "Expected to be a dict")
 
-    def test_edit_shoppinglist(self):
+    def test_05_edit_shoppinglist(self):
         result1 = shopping.edit_shoppinglist(None, None, None, None)
         result2 = shopping.edit_shoppinglist("", "", "", "")
         result3 = shopping.edit_shoppinglist("user_id", "token", "list_id", "newListName")
