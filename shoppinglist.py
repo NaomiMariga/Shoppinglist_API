@@ -55,7 +55,7 @@ class Shoppinglist(User):
                         user_id = row["user_id"]
                         list_id = row["list_id"]
                         list_name = row["list_name"]
-                        update_time = row["time_updated"]
+                        update_time = str(row["time_updated"])
                         lists = {
                             "user_id": user_id,
                             "list_id": list_id,
@@ -103,7 +103,25 @@ class Shoppinglist(User):
         }
 
     def delete_shoppinglist(self, user_id, token, list_id):
-        return
+        success = False
+        try:
+            logged_in = self.user_is_logged_in(user_id, token)
+            if logged_in["success"]:
+                sql = "DELETE FROM lists WHERE list_id = :list_id AND user_id = :user_id"
+                connection = self.database_connection()
+                stmt = text(sql)
+                stmt = stmt.bindparams(list_id=list_id, user_id=user_id)
+                connection.execute(stmt)
+                success = True
+                message = "list deleted"
+            else:
+                message = "user must be logged in to perform this action"
+        except Exception as error:
+            message = "An exception error occurred " + str(error)
+        return{
+            "success": success,
+            "message": message
+        }
 
     def add_items(self, user_id, token, list_id, item_name, quantity, units, cost):
         return
