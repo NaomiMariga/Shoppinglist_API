@@ -7,7 +7,7 @@ from user import User
 from shoppinglist import Shoppinglist
 
 user = User()
-shoppinglist = Shoppinglist()
+shopping = Shoppinglist()
 
 app = Flask(__name__)
 
@@ -49,14 +49,16 @@ def register():
                 "success": False
             }
     except Exception as error:
-        out = "An exception error occurred" + str(error)
+        out = {
+            "success": False,
+            "message": "An exception error occurred" + str(error)
+        }
 
     return Response(dict_to_json(out), mimetype="text/json")
 
 
 @app.route('/auth/login', methods=['POST', 'GET'])
 def login():
-
     try:
         if request.method == 'POST':
             email = request.form.get('email')
@@ -72,7 +74,10 @@ def login():
                 "success": False
             }
     except Exception as error:
-        out = "An exception error occurred" + str(error)
+        out = {
+            "success": False,
+            "message": "An exception error occurred" + str(error)
+            }
     return Response(dict_to_json(out), mimetype="text/json")
 
 
@@ -89,7 +94,10 @@ def reset_password():
                 "parameters": "email"
             }
     except Exception as error:
-        out = "An exception error occurred" + str(error)
+        out = {
+            "success": False,
+            "message": "An exception error occurred" + str(error)
+        }
     return Response(dict_to_json(out), mimetype="text/json")
 
 
@@ -147,13 +155,13 @@ def shoppinglist_create_and_view():
             token = request.form.get('token')
             list_name = request.form.get('list_name')
 
-            out = shoppinglist.create_shoppinglist(user_id, token, list_name)
+            out = shopping.create_shoppinglist(user_id, token, list_name)
 
         elif request.method == 'GET':
             user_id = request.args.get('user_id')
             token = request.args.get('token')
 
-            out = shoppinglist.read_shoppinglist(user_id, token)
+            out = shopping.read_shoppinglist(user_id, token)
 
         else:
             out = {
@@ -164,7 +172,7 @@ def shoppinglist_create_and_view():
             }
     except Exception as error:
         out = {
-            "message": "An exception error occurred" + str(error),
+            "message": "An exception error occurred in server" + str(error),
             "success": False
         }
     return Response(dict_to_json(out), mimetype="text/json")
@@ -177,15 +185,15 @@ def shoppinglist(list_id):
             user_id = request.form.get('user_id')
             token = request.form.get('token')
             list_name = request.form.get('list_name')
-            out = shoppinglist.edit_shoppinglist(list_id=list_id, user_id=user_id, token=token, list_name=list_name)
+            out = shopping.edit_shoppinglist(list_id=list_id, user_id=user_id, token=token, list_name=list_name)
         elif request.method == 'DELETE':
             user_id = request.form.get('user_id')
             token = request.form.get('token')
-            out = shoppinglist.delete_shoppinglist(user_id, token, list_id)
+            out = shopping.delete_shoppinglist(user_id, token, list_id)
         elif request.method == 'GET':
             user_id = request.args.get('user_id')
             token = request.args.get('token')
-            out = shoppinglist.read_items(user_id, token, list_id)
+            out = shopping.read_items(user_id, token, list_id)
         else:
             out = {
                 "success": False,
@@ -210,7 +218,7 @@ def add_items(list_id):
             quantity = request.form.get('quantity')
             units = request.form.get('units')
             cost = request.form.get('cost')
-            out = shoppinglist.add_items(user_id, token, list_id, item_name, quantity, units,cost)
+            out = shopping.add_items(user_id, token, list_id, item_name, quantity, units,cost)
         else:
             out = {
                 "success": False,
@@ -231,13 +239,13 @@ def edit_and_delete_items(list_id, item_id):
         if request.method == 'PUT':
             user_id = request.form.get('user_id')
             token = request.form.get('token')
-            attribute = request.form('attribute')
+            attribute = request.form.get('attribute')
             value = request.form.get('value')
-            out = shoppinglist.edit_items(user_id, token, list_id, item_id, attribute, value)
+            out = shopping.edit_items(user_id, token, list_id, item_id, attribute, value)
         elif request.method == 'DELETE':
-            user_id = request.args.get('user_id')
-            token = request.args.get('token')
-            out = shoppinglist.delete_items(user_id, token, list_id, item_id)
+            user_id = request.form.get('user_id')
+            token = request.form.get('token')
+            out = shopping.delete_items(user_id, token, list_id, item_id)
         else:
             out = {
                 "success": False,
@@ -248,11 +256,11 @@ def edit_and_delete_items(list_id, item_id):
     except Exception as error:
         out = {
             "success": False,
-            "message": "An exception error occured" + str(error)
+            "message": "An exception error occurred" + str(error)
         }
     return Response(dict_to_json(out), mimetype="text/json")
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8000))
+    port = int(os.environ.get('PORT', 5000))
     app.run(host="0.0.0.0", port=port)

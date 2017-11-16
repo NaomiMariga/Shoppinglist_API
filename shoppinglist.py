@@ -7,8 +7,7 @@ from user import User
 
 
 class Shoppinglist(User):
-
-    def create_shoppinglist(self, user_id, token, list_name:str):
+    def create_shoppinglist(self, user_id, token, list_name: str):
         success = False
         try:
             logged_in = self.user_is_logged_in(user_id, token)
@@ -169,10 +168,10 @@ class Shoppinglist(User):
                     success = True
                     message = []
                     for row in rows:
-                            item_id = row["item_id"],
-                            list_id = row["list_id"],
-                            item_name = row["item_name"],
-                            quantity = row["quantity"],
+                            item_id = row["item_id"]
+                            list_id = row["list_id"]
+                            item_name = row["item_name"]
+                            quantity = row["quantity"]
                             units = row["units"]
                             item_cost = row["item_cost"]
                             update_time = str(row["time_updated"])
@@ -203,14 +202,14 @@ class Shoppinglist(User):
             logged_in = self.user_is_logged_in(user_id, token)
             if logged_in["success"]:
                 if attribute == "item_name":
-                    if attribute and value is not None and value.strip() is not "":
+                    if value is not None and value.strip() is not "":
                         sql = "UPDATE items SET item_name = :item_name WHERE item_id = :item_id AND list_id=:list_id"
                         stmt = text(sql)
                         stmt = stmt.bindparams(list_id=list_id, item_id=item_id, item_name=value)
                         connection = self.database_connection()
                         connection.execute(stmt)
                         success = True
-                        message = attribute + "Updated successfully"
+                        message = attribute + " Updated successfully"
                     else:
                         message = "value and attribute cannot be none or empty string "
                 elif attribute == "quantity":
