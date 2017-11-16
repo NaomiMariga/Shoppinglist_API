@@ -7,7 +7,7 @@ import sqlalchemy
 class Utilities:
     def database_connection(self):
         try:
-            url = "postgresql://postgres:Theology@localhost:5432/shoppinglist"
+            url = "postgresql://shoppinglist:Andela100@localhost:5432/shoppinglist"
 
             connection = sqlalchemy.create_engine(url)
 
@@ -17,4 +17,6 @@ class Utilities:
             print(str(error))
 
         return connection
+
+
 
