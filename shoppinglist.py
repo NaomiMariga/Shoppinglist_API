@@ -153,15 +153,16 @@ class Shoppinglist(User):
             "message": message
         }
 
-    def read_items(self, user_id, token, list_id):
+    def read_items(self, user_id, token, list_id, limit=10, offset=0, search=""):
         success = False
         try:
             logged_in = self.user_is_logged_in(user_id, token)
             if logged_in["success"]:
-                sql = "SELECT * FROM items WHERE list_id = :list_id"
+                sql = "SELECT * FROM items WHERE list_id = :list_id AND item_name LIKE :_search LIMIT :_limit OFFSET :_offset"
                 connection = self.database_connection()
                 stmt = text(sql)
-                stmt = stmt.bindparams(list_id=list_id)
+                search = '%'+search+'%'
+                stmt = stmt.bindparams(list_id=list_id, _limit=int(limit), _offset=int(offset), _search=search)
                 result = connection.execute(stmt)
                 rows = result.fetchall()
                 if rows is not None:

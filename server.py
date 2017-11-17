@@ -193,12 +193,24 @@ def shoppinglist(list_id):
         elif request.method == 'GET':
             user_id = request.args.get('user_id')
             token = request.args.get('token')
-            out = shopping.read_items(user_id, token, list_id)
+            page = str(request.args.get('page', "1"))
+            count = str(request.args.get('count', "10"))
+            search = request.args.get('q', "")
+            if not page.isnumeric():
+                page = 1
+            page = int(page)
+            if not count.isnumeric():
+                count = 10
+            count = int(count)
+            offset = (page - 1) * count
+
+            out = shopping.read_items(user_id, token, list_id, count, offset, search)
         else:
             out = {
                 "success": False,
                 "message": "use PUT, DELETE or POST to provide below parameters",
-                "parameters": "user_id, token"
+                "parameters": "user_id, token",
+                "optional parameters": "page, count"
             }
     except Exception as error:
         out = {
@@ -208,7 +220,7 @@ def shoppinglist(list_id):
     return Response(dict_to_json(out), mimetype="text/json")
 
 
-@app.route('/shoppinglists/<int:list_id>/items/', methods=['POST'])
+@app.route('/shoppinglists/<int:list_id>/items', methods=['POST'])
 def add_items(list_id):
     try:
         if request.method == 'POST':
