@@ -33,6 +33,7 @@ def upgrade():
         sa.Column('list_name', sa.String(50), nullable=False),
         sa.Column('time_updated', sa.TIMESTAMP, default=sa.func.now())
     )
+
     op.create_table(
         'items',
         sa.Column('item_id', sa.BigInteger, primary_key=True),
@@ -52,7 +53,22 @@ def upgrade():
         sa.Column('login_time', sa.TIMESTAMP, default=sa.func.now())
 
     )
+    op.create_foreign_key(
+        'user_id',
+        'users', 'authentication',
+        ['user_id'], ['user_id']
+    )
+    op.create_foreign_key(
+        'list_id',
+        'lists',
+        ['list_id']
+    )
 
 
 def downgrade():
-    pass
+    op.drop_table('users')
+    op.drop_table('lists')
+    op.drop_table('items')
+    op.drop_table('authentication')
+    op.drop_foreign_key('user_id')
+    op.drop_foreign_key('list_id')
