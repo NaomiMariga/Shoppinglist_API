@@ -5,6 +5,11 @@ python:
 install:
   - pip install -r requirements.txt
 # command to run tests
+services:
+ - postgresql
+before_script:
+  - psql -c "CREATE DATABASE shoppinglist;" -U postgres
+  - psql -c "CREATE USER shoppinglist WITH PASSWORD 'Andela100';" -U postgres
 script: python3.6 tests.py
 
 after_success:
