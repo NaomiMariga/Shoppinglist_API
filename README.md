@@ -1,6 +1,7 @@
 
 #### Shoppinglist_API is a Persistent Flask API version of the Shoppinglist application that allows users to keep track of the items they wish to purchase while maintaining budget.
 #### Versions
+[![Build Status](https://travis-ci.org/NaomiMariga/Shoppinglist_API.svg?branch=develop)](https://travis-ci.org/NaomiMariga/Shoppinglist_API#)
 - version 1
 - version 2
 - version 3
