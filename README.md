@@ -67,11 +67,7 @@
  git clone https://github.com/NaomiMariga/Shoppinglist_API.git Shoppinglist_API
  cd Shoppinglist_API
  git checkout version_3
- ``` 
- - run the following command while inside the project directory
-```sh 
-  psql -d shoppinglist -U shoppinglist -W -f shoppinglist.sql
-```
+ ```
  -  install virtual environment system wide
  ```sh
  apt install python3.6 venv
@@ -87,6 +83,10 @@
  - install the requirements
  ```sh
  pip install -r requirements.txt 
+ ```
+ - now to create tables in the database
+ ```sh
+ alembic upgrade head
  ```
 the following  command will run the application
 ```sh
