@@ -101,4 +101,4 @@ python server.py
 > #### instructions to testing the API manually
 
 - use the below link to test the API with postman using the endpoints given earlier
-[![link to heroku application]https://naomishoppinglist-api.herokuapp.com)](https://naomishoppinglist-api.herokuapp.com)
+[https://naomishoppinglist-api.herokuapp.com)](https://naomishoppinglist-api.herokuapp.com)
