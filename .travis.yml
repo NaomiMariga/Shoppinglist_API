@@ -12,7 +12,7 @@ before_script:
   - psql -c "CREATE USER shoppinglist WITH PASSWORD 'Andela100';" -U postgres
   - alembic upgrade head
 script:
-  - python3.6 tests.py
+  - python3.6 tests/tests.py
   - coveralls
 
 after_success:
