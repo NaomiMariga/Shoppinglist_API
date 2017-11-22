@@ -97,3 +97,8 @@ python server.py
 ```
 > ###### testing with postman
 - use the API endpoints when testing with postman
+
+> #### instructions to testing the API manually
+
+- use the below link to test the API with postman using the endpoints given earlier
+[![link to heroku application]https://naomishoppinglist-api.herokuapp.com)](https://naomishoppinglist-api.herokuapp.com)

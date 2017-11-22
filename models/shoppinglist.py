@@ -79,7 +79,7 @@ class Shoppinglist(User):
             logged_in = self.user_is_logged_in(user_id, token)
             if logged_in["success"]:
                 if list_name is not None and list_name.strip() is not "":
-                    if list_name.isalnum() and len(list_name) >= 1:
+                    if len(list_name) >= 1:
                         sql = "UPDATE lists SET list_name = :list_name WHERE list_id = :list_id AND user_id = :user_id"
                         connection = self.database_connection()
                         stmt = text(sql)
@@ -88,7 +88,7 @@ class Shoppinglist(User):
                         success = True
                         message = "list name successfully changed"
                     else:
-                        message = "list name contains letters and numbers only and it is at least 1 character long"
+                        message = "list name is at least 1 character long"
                 else:
                     message = "list name can not be null or an empty string"
             else:

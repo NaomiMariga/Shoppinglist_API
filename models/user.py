@@ -87,7 +87,7 @@ class User(Utilities):
                             username = row["username"]
                             auth_token = self.auth_token("abcdefghijklmnopqrstuvwzyz1234567890", 20)
                             message = {
-                                "message": "Login was successful, Welcome" + username,
+                                "message": "Login was successful, Welcome " + username,
                                 "user_id": user_id,
                                 "auth_token": auth_token
                             }
