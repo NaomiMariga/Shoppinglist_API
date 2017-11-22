@@ -3,7 +3,7 @@ lists and items functions
 """
 from sqlalchemy.sql import text
 
-from user import User
+from models.user import User
 
 
 class Shoppinglist(User):

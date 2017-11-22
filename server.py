@@ -3,8 +3,8 @@ import os
 
 from flask import Flask, request, Response
 
-from user import User
-from shoppinglist import Shoppinglist
+from models.shoppinglist import Shoppinglist
+from models.user import User
 
 user = User()
 shopping = Shoppinglist()

@@ -1,8 +1,10 @@
 import random
+import smtplib
+
 from sqlalchemy.sql import text
 from validate_email import validate_email
-from utilities import Utilities
-import smtplib
+
+from models.utilities import Utilities
 
 
 class User(Utilities):

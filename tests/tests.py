@@ -1,8 +1,7 @@
 import unittest
 
-from shoppinglist import Shoppinglist
-
-from user import User
+from models.shoppinglist import Shoppinglist
+from models.user import User
 
 user = User()
 shopping = Shoppinglist()
