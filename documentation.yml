@@ -1,0 +1,183 @@
+---
+basePath: "/"
+
+info:
+  description: Shoppinglist_API is a Persistent Flask API version of the Shoppinglist application that allows users to keep track of the items they wish to purchase while maintaining budget.
+
+  title: Naomi Shoppinglist API
+  version: 1.0.0
+
+paths:
+
+  "/auth/register":
+    post:
+      tags:
+        - Register
+      summary: user account registration
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: email
+          type: string
+          required: true
+          description: Requires a valid email address
+        - in: formData
+          name: username
+          type: string
+          required: true
+          description: Accepts an alphanumeric username
+        - in: formData
+          name: pword
+          type: string
+          required: true
+          description: Contains lowercase, uppercase and digits, and at least 6 characters
+
+  "/auth/login":
+    post:
+      tags:
+        - Login
+      summary: user login
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: email
+          type: string
+          required: true
+          description: Accepts only registered emails
+        - in: formData
+          name: pword
+          type: string
+          required: true
+          description: Accepts only registered password that matches the email provided
+
+  "/auth/reset-password":
+    post:
+      tags:
+        - Reset Password
+      summary: user reset password
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: email
+          type: string
+          required: true
+          description: Accepts only registered email address
+
+  "/auth/change-password":
+    post:
+      tags:
+        - Change password
+      summary: change password
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: old_password
+          type: string
+          required: true
+          description: Requires the current password
+        - in: formData
+          name: new_password
+          type: string
+          required: true
+          description: Contains lowercase, uppercase, digits and 6 characters long
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+  "/shoppinglists":
+    post:
+      tags:
+        - Create shoppinglists
+      summary: create shoppinglist
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: list_name
+          type: string
+          required: true
+          description: Expects a string
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+    get:
+      tags:
+        - View shoppinglists
+      summary: view shoppinglists
+      parameters:
+        - in: query
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: query
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+  "/shoppinglists/{list_id}":
+    put:
+      description: This is where the user edits the list name
+      tags:
+        - Edit shoppinglists
+      summary: Edit shoppinglist
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: list_id
+          type: integer
+          description: Requires a correct list_id
+        - in: formData
+          name: list_name
+          type: string
+          description: Requires a list name
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+    delete:
+      description: list name will be deleted
+      tags:
+        - Delete shoppinglist
+      summary: Delete shoppinglist
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: path
+          name: list_id
+          type: integer
+          description: Requires a correct list_id
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token

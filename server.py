@@ -2,6 +2,7 @@ import json
 import os
 
 from flask import Flask, request, Response
+from flasgger import Swagger
 
 from models.shoppinglist import Shoppinglist
 from models.user import User
@@ -10,11 +11,25 @@ user = User()
 shopping = Shoppinglist()
 
 app = Flask(__name__)
+Swagger(app, template_file="documentation.yml")
 
 
 def dict_to_json(dct):
     return json.dumps(dct, indent=4, separators=(',', ': '))
 
+
+data_sent = None
+
+
+@app.before_request
+def before():
+    global data_sent
+    if request.headers.get('Content-Type') == "application/json":
+        data_sent = request.json
+    else:
+        print(request.headers.get('Content_Type'))
+        print(request.data)
+        data_sent = request.form
 
 @app.route('/')
 def welcome():
@@ -37,9 +52,9 @@ def welcome():
 def register():
     try:
         if request.method == 'POST':
-            email = request.form.get('email')
-            username = request.form.get('username')
-            password = request.form.get('pword')
+            email = data_sent.get('email')
+            username = data_sent.get('username')
+            password = data_sent.get('pword')
 
             out = user.user_registration(email, username, password)
         else:
@@ -61,8 +76,8 @@ def register():
 def login():
     try:
         if request.method == 'POST':
-            email = request.form.get('email')
-            password = request.form.get('pword')
+            email = data_sent.get('email')
+            password = data_sent.get('pword')
             out = user.user_login(
                 email=email,
                 password=password
@@ -85,7 +100,7 @@ def login():
 def reset_password():
     try:
         if request.method == 'POST':
-            email = request.form.get('email')
+            email = data_sent.get('email')
             out = user.reset_password(email=email)
         else:
             out = {
@@ -105,8 +120,8 @@ def reset_password():
 def logout():
     try:
         if request.method == 'POST':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
             out = user.log_out(user_id=user_id, token=token)
         else:
             out = {
@@ -123,10 +138,10 @@ def logout():
 def change_password():
     try:
         if request.method == 'POST':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
-            old_password = request.form.get('old_password')
-            new_password = request.form.get('new_password')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
+            old_password = data_sent.get('old_password')
+            new_password = data_sent.get('new_password')
             out = user.change_password(
                 user_id=user_id,
                 token=token,
@@ -151,9 +166,9 @@ def change_password():
 def shoppinglist_create_and_view():
     try:
         if request.method == 'POST':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
-            list_name = request.form.get('list_name')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
+            list_name = data_sent.get('list_name')
 
             out = shopping.create_shoppinglist(user_id, token, list_name)
 
@@ -182,13 +197,13 @@ def shoppinglist_create_and_view():
 def shoppinglist(list_id):
     try:
         if request.method == 'PUT':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
-            list_name = request.form.get('list_name')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
+            list_name = data_sent.get('list_name')
             out = shopping.edit_shoppinglist(list_id=list_id, user_id=user_id, token=token, list_name=list_name)
         elif request.method == 'DELETE':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
             out = shopping.delete_shoppinglist(user_id, token, list_id)
         elif request.method == 'GET':
             user_id = request.args.get('user_id')
@@ -224,12 +239,12 @@ def shoppinglist(list_id):
 def add_items(list_id):
     try:
         if request.method == 'POST':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
-            item_name = request.form.get('item_name')
-            quantity = request.form.get('quantity')
-            units = request.form.get('units')
-            cost = request.form.get('cost')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
+            item_name = data_sent.get('item_name')
+            quantity = data_sent.get('quantity')
+            units = data_sent.get('units')
+            cost = data_sent.get('cost')
             out = shopping.add_items(user_id, token, list_id, item_name, quantity, units,cost)
         else:
             out = {
@@ -249,14 +264,14 @@ def add_items(list_id):
 def edit_and_delete_items(list_id, item_id):
     try:
         if request.method == 'PUT':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
-            attribute = request.form.get('attribute')
-            value = request.form.get('value')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
+            attribute = data_sent.get('attribute')
+            value = data_sent.get('value')
             out = shopping.edit_items(user_id, token, list_id, item_id, attribute, value)
         elif request.method == 'DELETE':
-            user_id = request.form.get('user_id')
-            token = request.form.get('token')
+            user_id = data_sent.get('user_id')
+            token = data_sent.get('token')
             out = shopping.delete_items(user_id, token, list_id, item_id)
         else:
             out = {

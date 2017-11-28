@@ -101,4 +101,7 @@ python server.py
 > #### instructions to testing the API manually
 
 - use the below link to test the API with postman using the endpoints given earlier
-[https://naomishoppinglist-api.herokuapp.com)](https://naomishoppinglist-api.herokuapp.com)
+[https://naomishoppinglist-api.herokuapp.com](https://naomishoppinglist-api.herokuapp.com)
+
+- use the link below to view the documentation
+[Shoppinglist API Documentation](https://naomishoppinglist-api.herokuapp.com/apidocs)
