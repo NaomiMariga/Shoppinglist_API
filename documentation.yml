@@ -181,3 +181,143 @@ paths:
           type: string
           required: true
           description: Requires a valid token
+    get:
+      description: List items will be displayed
+      tags:
+        - View shoppinglist items
+      summary: Read shoppinglist items
+      parameters:
+      - in: path
+        name: list_id
+        type: integer
+        description: Requires a correct list_id
+      - in: query
+        name: user_id
+        type: integer
+        required: true
+        description: Requires a correct user_id
+      - in: query
+        name: token
+        type: string
+        required: true
+        description: Requires a valid token
+  "/shoppinglists/{list_id}/items":
+    post:
+      description: list items will be added
+      tags:
+        - Add shoppinglist items
+      summary: Add shopping list items
+      parameters:
+        - in: path
+          name: list_id
+          type: integer
+          description: Requires a correct list_id
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+        - in: formData
+          name: item_name
+          type: string
+          required: true
+          description: Requires an alphanumeric string
+        - in: formData
+          name: quantity
+          type: integer
+          required: false
+          description: Requires an integer
+        - in: formData
+          name: units
+          type: string
+          required: false
+          description: Requires an alphanumeric string not exceeding 5 characters
+        - in: formData
+          name: cost
+          type: integer
+          required: false
+          description: Requires an integer
+
+  "/shoppinglists/{list_id}/items/{item_id}":
+    put:
+      tags:
+        - Edit items
+      description: Provide the parameters below
+      summary: Items will be edited
+      parameters:
+        - in: path
+          name: list_id
+          type: integer
+          description: Requires a correct list_id
+        - in: path
+          name: item_id
+          type: integer
+          description: Requires a correct item_id
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+        - in: formData
+          name: attribute
+          type: string
+          required: true
+          description: Attribute can be item_name, quantity, units or cost
+        - in: formData
+          name: value
+          type: integer
+          required: false
+          description: Provide a value to a specified attribute
+    delete:
+      tags:
+        - Delete item
+      description: Provide the parameters below
+      summary: Items will be deleted
+      parameters:
+        - in: path
+          name: list_id
+          type: integer
+          description: Requires a correct list_id
+        - in: path
+          name: item_id
+          type: integer
+          description: Requires a correct item_id
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+
+  "/auth/logout":
+    post:
+      tags:
+        - Logout
+      description: Provide user_id and token to logout
+      summary: User will be logged out
+      parameters:
+        - in: formData
+          name: user_id
+          type: integer
+          required: true
+          description: Requires a correct user_id
+        - in: formData
+          name: token
+          type: string
+          required: true
+          description: Requires a valid token
+
